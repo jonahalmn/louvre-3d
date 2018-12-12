@@ -29,8 +29,11 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
-    "webvr-polyfill": "^0.9.38",
+    "glslify-loader": "^2.0.0",
     "gsap": "^1.20.2",
-    "three": "^0.87.1"
+    "simplex-noise": "^2.4.0",
+    "three": "^0.87.1",
+    "webpack-glsl-loader": "^1.0.1",
+    "webvr-polyfill": "^0.9.38"
   }
 }

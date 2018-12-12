@@ -79,6 +79,10 @@ module.exports = function(env) {
             },{
                 test: [/\.mp3$/, /\.dae$/, /\.jpg$/, /\.obj$/, /\.fbx$/],
                 use: ['file-loader?name=[path][name].[hash].[ext]']
+            },
+            {
+                test:[/\.vert$/,/\.frag$/,/\.glsl$/],
+                loader: 'webpack-glsl-loader'
             }]
         },
         devtool: env == 'dev' ? 'cheap-eval-source-map' : '',
