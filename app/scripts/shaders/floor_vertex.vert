@@ -1,7 +1,11 @@
 varying vec3 vNormal;
+varying vec3 vViewPosition;
+varying vec2 vUv;
+varying float fogDepth;
 
 uniform float scale;
 uniform float posY;
+uniform float posX;
 
 vec3 mod289(vec3 x) {
   return x - floor(x * (1.0 / 289.0)) * 289.0;
@@ -93,11 +97,18 @@ float snoise(vec3 v)
   m = m * m;
   return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), 
                                 dot(p2,x2), dot(p3,x3) ) );
-  }
+}
 
 void main (){
-    float noise = snoise(vec3(position.x * 0.1 + posY, position.y * 0.1, 1.));
-    vNormal = normal * noise;
-    vec3 newPos = position + vNormal;
+    float noise = snoise(vec3(position.x * 0.1 + posX, position.y * 0.1 + posY, 1.));
+    //vNormal = normalMatrix * normal * noise;
+    //vec3 nor2 = normal * noise;
+    vUv = uv;
+    vec3 tangentX = vec3(0.001, 0., -snoise(vec3(position.x * 0.1 + posX, position.y * 0.1 + posY, 1.)) + snoise(vec3(position.x * 0.1 + posX + 0.001, position.y * 0.1 + posY, 1.)));
+    vec3 tangentY = vec3(0., 0.001, -snoise(vec3(position.x * 0.1 + posX, position.y * 0.1 + posY, 1.)) + snoise(vec3(position.x * 0.1 + posX, position.y * 0.1 + posY + 0.001, 1.)));
+    vNormal = -normalize(cross(tangentX, tangentY));
+    vec3 newPos = position + normal * noise;
+    vec4 modelViewPosition = modelViewMatrix * vec4(newPos, 1.0);
+    vViewPosition = -modelViewPosition.xyz;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.);
 }
