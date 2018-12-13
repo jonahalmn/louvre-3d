@@ -15,3 +15,27 @@ window.addEventListener('keyup', function(e){
         app.stopMove();
     }
 });
+
+window.addEventListener('keyup', function(e){
+    if(e.keyCode === 37){
+        app.stopTurn();
+    }
+});
+
+window.addEventListener('keydown', function(e){
+    if(e.keyCode === 37){
+        app.startTurn(-1);
+    }
+});
+
+window.addEventListener('keyup', function(e){
+    if(e.keyCode === 39){
+        app.stopTurn();
+    }
+});
+
+window.addEventListener('keydown', function(e){
+    if(e.keyCode === 39){
+        app.startTurn(1);
+    }
+});

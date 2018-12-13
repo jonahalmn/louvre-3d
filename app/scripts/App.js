@@ -18,6 +18,9 @@ export default class App {
         OBJLoader(THREE);
         //let OrbitControl = OrbitControls(THREE);
         this.heading = 0;
+        this.turnSide = 1;
+        this.isRotate = false;
+
         this.container = document.querySelector( '#main' );
         document.body.appendChild( this.container );
         
@@ -76,13 +79,24 @@ export default class App {
         //this.mesh.rotation.x += 0.01;
         //this.mesh.rotation.y += 0.02;
         //this.terrain.uniforms.posY.value+=0.01;
-        
-        if(this.moving){
-            this.worldRobotPosition.z += 0.01;
+    
+
+        if(this.isRotate){
+            this.heading += this.turnSide *0.1;
         }
+
+        if(this.moving){
+            let deltaZ = Math.cos(this.heading) * 0.01;
+            let deltaX = Math.sin(this.heading) * 0.01;
+            this.worldRobotPosition.z += deltaZ;
+            this.worldRobotPosition.x += deltaX;
+        }
+
         this.camera.position.z = 5;
-        //this.camera.position.y = 2.5;
+        this.camera.position.z = 5 * Math.cos(this.heading);
+        this.camera.position.x = -5 * Math.sin(this.heading);
         this.terrain.offsetY = this.worldRobotPosition.z;
+        this.terrain.offsetX = this.worldRobotPosition.x;
         this.worldRobotPosition.y = this.staticRobotPosition.y = this.noise.noise3D(this.worldRobotPosition.x, this.worldRobotPosition.z, 0) * 1;
         this.camera.position.y = this.noise.noise3D(this.worldRobotPosition.x, this.worldRobotPosition.z - 6, 0) * 0.5 + 2;
         this.camera.lookAt(this.staticRobotPosition);
@@ -106,6 +120,15 @@ export default class App {
     stopMove(){
         this.moving = false;
     }
+
+    startTurn(side = 1){
+        this.turnSide = side;
+        this.isRotate = true;
+    }
+
+    stopTurn(){
+        this.isRotate = false;
+    }
 }
 
 class Terrain {
@@ -114,7 +137,7 @@ class Terrain {
         this.time = 0;
         this.noise = noise;
         //this.noise2 = new SimplexNoise();
-        this.geometry = new THREE.PlaneBufferGeometry(40, 40, 110, 110);
+        this.geometry = new THREE.PlaneBufferGeometry(100, 100, 200, 200);
 
         this.offsetY = 0;
         this.offsetX = 0;
@@ -156,10 +179,11 @@ class Terrain {
     update(){
         this.geometry.verticesNeedUpdate = true;
         this.geometry.attributes.position.needsUpdate = true;
+
         let vertices = this.geometry.attributes.position;
         let count = vertices.count;
         for (let i = 0, j = 0; i < count; i++, j += 3) {
-            vertices.array[j+2] = this.noise.noise3D(vertices.array[j] * 0.1,vertices.array[j+1] * 0.1 + this.offsetY,0) * 1
+            vertices.array[j+2] = this.noise.noise3D(vertices.array[j] * 0.1 + this.offsetX,vertices.array[j+1] * 0.1 + this.offsetY,0) * 1
         }
         // this.geometry.vertices.forEach(vertex => {
         //     vertex.z = this.noise.noise3D(vertex.x*0.2, vertex.y*0.2 + this.time * 0.01, 0) + 2 * this.noise.noise3D(vertex.x*0.2 + 5, vertex.y*0.2 + 5 + this.time * 0.01, 0);
