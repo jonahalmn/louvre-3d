@@ -9,6 +9,12 @@ import floorFrag from './shaders/floor_fragment.vert';
 import SimplexNoise from 'simplex-noise';
 import OBJLoader from 'three-obj-loader';
 import RobotObj from '../models/robot.obj';
+import RockObj01 from '../models/pierre01.obj';
+import RockObj02 from '../models/pierre02.obj';
+import RockObj03 from '../models/pierre03.obj';
+import RockObj04 from '../models/pierre04.obj';
+import RockObj05 from '../models/pierre05.obj';
+import RockObj06 from '../models/pierre06.obj';
 import OrbitControls from 'three-orbit-controls';
 
 export default class App {
@@ -43,6 +49,13 @@ export default class App {
         this.terrain = new Terrain(this.scene, this.noise);
         this.sky = new Sky(this.scene);
         this.robot = new Robot(this.scene, this.loader, this.camera);
+        this.rocks = [];
+        //this.rock = new Rock(this.scene, this.loader, this.camera);
+
+        for (let i = 0; i < 10; i++) {
+            //onst element = array[i];
+            this.rocks.push(new Rock(this.scene, this.loader, this.camera));
+        }
 
         var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.7 );
         directionalLight.position.x = 2;
@@ -50,8 +63,8 @@ export default class App {
         directionalLight.castShadow = true;
         this.scene.add( directionalLight );
 
-        directionalLight.shadow.mapSize.width = 1024;  // default
-        directionalLight.shadow.mapSize.height = 1024; // default
+        directionalLight.shadow.mapSize.width = 2048;  // default
+        directionalLight.shadow.mapSize.height = 2048; // default
         directionalLight.shadow.camera.near = 0;    // default
         directionalLight.shadow.camera.far = 20;     // default
 
@@ -91,6 +104,16 @@ export default class App {
             this.worldRobotPosition.z += deltaZ;
             this.worldRobotPosition.x += deltaX;
         }
+
+
+        this.rocks.forEach((rock) => {
+            if(rock.object != null && rock.object != undefined){
+                rock.object.position.z = -rock.position.z + this.worldRobotPosition.z * 10;
+                rock.object.position.y = this.noise.noise3D(rock.position.x,rock.position.z,0);
+                rock.object.position.x = -rock.position.x -this.worldRobotPosition.x *10;
+            }
+        })
+        
 
         this.camera.position.z = 5;
         this.camera.position.z = 5 * Math.cos(this.heading);
@@ -255,4 +278,60 @@ class Robot {
             }
         );
     }
+}
+
+class Rock {
+
+    constructor(scene, loader, camera){
+        let material = new THREE.MeshPhongMaterial({color: 0x383838});
+        this.position = {x: 15 * Math.random(), y: 0, z: 15 * Math.random()};
+        this.scale = 0.003;
+        // load a resource
+        loader.load(
+            // resource URL
+            RockObj04,
+            // called when resource is loaded
+            ( object ) => {
+                object.traverse( function ( child ) {
+
+                    if ( child instanceof THREE.Mesh ) {
+                        
+                        child.material = material;
+                        child.castShadow = true;
+                        child.receiveShadow = false;
+                        //camera.lookAt(child);
+                    }
+            
+                } );
+                //camera.lookAt(object);
+                //object.position.set(this.position.x, this.position.y, this.position.z);
+                object.position.z = this.position.z;
+                object.scale.set(this.scale,this.scale,this.scale);
+                scene.add( object );
+                this.object = object;
+                //camera.lookAt(object);
+                
+
+            },
+            // called when loading is in progresses
+            function ( xhr ) {
+
+                console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+            },
+            // called when loading has errors
+            function ( error ) {
+
+                console.log( 'An error happened' );
+
+            }
+        );
+    }
+
+    update(){
+        //object.position.x = this.position.x;
+        //object.position.y = this.position.y;
+        //object.position.z = this.position.z;
+    }
+
 }
