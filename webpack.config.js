@@ -83,7 +83,16 @@ module.exports = function(env) {
             {
                 test:[/\.vert$/,/\.frag$/,/\.glsl$/],
                 loader: 'webpack-glsl-loader'
-            }]
+            },
+            {
+                test: /\.(png|jpg|gif)$/,
+                use: [
+                  {
+                    loader: 'file-loader',
+                    options: {}
+                  }
+                ]
+              }]
         },
         devtool: env == 'dev' ? 'cheap-eval-source-map' : '',
         plugins: plugins,
