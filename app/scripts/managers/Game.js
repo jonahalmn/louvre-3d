@@ -10,7 +10,7 @@ export default class Game {
     }
 
     setArcheologicArea(){
-        this.sites.push(new THREE.Vector3(300 * Math.random() - 150,30 * Math.random() + 20,0));
+        this.sites.push(new THREE.Vector3(300 * Math.random() - 150,60 * Math.random() + 60,0));
     }
 
 }

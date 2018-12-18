@@ -1,5 +1,6 @@
 import background from '../../A7/map/bkg.png';
 import arrow from '../../A7/map/arrow.png';
+import site1 from '../../A7/map/site1.png';
 
 export default class Map {
 
@@ -11,6 +12,9 @@ export default class Map {
 
         this.arrowImg = new Image();
         this.arrowImg.src = arrow;
+
+        this.site1 = new Image();
+        this.site1.src = site1;
 
         this.height = 500;
         this.heading = 0;
@@ -47,8 +51,8 @@ export default class Map {
 
     draw(){
         this.background();
-        this.myPosition();
         this.targets();
+        this.myPosition();
 
         requestAnimationFrame(this.draw.bind(this));
     }
@@ -79,7 +83,8 @@ export default class Map {
         this.targetsPos.forEach((target) => {
             this.ctx.fillStyle = "#ff0000";
             this.ctx.beginPath();
-            this.ctx.arc(this.xToCanvasCoords(-target.x / 300), this.yToCanvasCoords(target.y / 300), 10, 0, 2 * Math.PI);
+            this.ctx.drawImage(this.site1, this.xToCanvasCoords((-target.x / 300)) - 75, this.yToCanvasCoords((target.y/ 300)) - 75, 150, 150);
+            //this.ctx.arc(this.xToCanvasCoords(-target.x / 300), this.yToCanvasCoords(target.y / 300), 10, 0, 2 * Math.PI);
             this.ctx.fill();
             this.ctx.closePath();
         });

@@ -47,8 +47,8 @@ import Game from './managers/Game';
 
 import Map from './ui/Map';
 
-const rockArray = [RockObj01, RockObj02, RockObj03, RockObj04, RockObj05, RockObj06];
-const mountainArray = [mountain01, mountain02, mountain03, mountain04, mountain05];
+//const rockArray = [RockObj01, RockObj02, RockObj03, RockObj04, RockObj05, RockObj06];
+//const mountainArray = [mountain01, mountain02, mountain03, mountain04, mountain05];
 
 
 export default class App {
