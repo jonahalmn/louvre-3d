@@ -34,7 +34,7 @@ import mountain05 from '../models/mountain/montain05.obj';
 
 import site1 from '../models/sites/1.obj';
 
-import Terrain from './landscape/Terrain.js';
+import Terrain from './landscape/TerrainOptimized.js';
 import Sky from './landscape/Sky.js';
 import Mountain from './landscape/Mountain';
 import Robot from './landscape/Robot';
@@ -154,7 +154,7 @@ export default class App {
         //this.mesh.rotation.y += 0.02;
         //this.terrain.uniforms.posY.value+=0.01;
 
-        this.intersect = this.ray.intersectObject(this.terrain.mesh, false, this.intersect);
+        this.intersect = this.ray.intersectObjects(this.terrain.getPlanesMesh(), false, this.intersect);
         if(this.mountains[0].object){
             this.intersectH = this.rayH.intersectObjects(this.elementsManager.getObjectProperty(), true, this.intersectH);
         }
@@ -185,6 +185,7 @@ export default class App {
 
         this.map.position.x = this.worldRobotPosition.x / 30;
         this.map.position.y = this.worldRobotPosition.z / 30;
+        this.map.heading = this.heading;
 
 
         this.rocks.forEach((rock) => {

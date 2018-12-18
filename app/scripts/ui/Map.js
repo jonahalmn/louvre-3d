@@ -1,8 +1,19 @@
+import background from '../../A7/map/bkg.png';
+import arrow from '../../A7/map/arrow.png';
+
 export default class Map {
 
 
     constructor(container){
+
+        this.backgroundImg = new Image();
+        this.backgroundImg.src = background;
+
+        this.arrowImg = new Image();
+        this.arrowImg.src = arrow;
+
         this.height = 500;
+        this.heading = 0;
         this.width = 500;
         this.container = container;
         this.canvas = '';
@@ -15,7 +26,9 @@ export default class Map {
         this.targetsPos = [];
 
         this.createCanvas();
-        this.draw();
+        //this.draw();
+
+        this.backgroundImg.onload = this.draw.bind(this);
 
     }
 
@@ -41,16 +54,23 @@ export default class Map {
     }
 
     background(){
+        this.ctx.clearRect(0,0,this.width, this.height)
         this.ctx.beginPath();
         this.ctx.fillStyle = '#ffffff';
-        this.ctx.fillRect(0, 0, this.height, this.width);
+        //this.ctx.fillRect(0, 0, this.height, this.width);
+        this.ctx.drawImage(this.backgroundImg, 0, 0, this.height, this.width);
         this.ctx.closePath();
     }
 
     myPosition(){
         this.ctx.fillStyle = "#000000";
         this.ctx.beginPath();
-        this.ctx.arc(this.xToCanvasCoords(this.position.x), this.yToCanvasCoords(this.position.y), 10, 0, 2 * Math.PI);
+        this.ctx.translate(this.xToCanvasCoords(this.position.x), this.yToCanvasCoords(this.position.y))
+        this.ctx.rotate(this.heading);
+        this.ctx.drawImage(this.arrowImg, -25, -25, 50, 50);
+        this.ctx.rotate(-this.heading);
+        this.ctx.translate(-this.xToCanvasCoords(this.position.x), -this.yToCanvasCoords(this.position.y))
+        //this.ctx.arc(this.xToCanvasCoords(this.position.x), this.yToCanvasCoords(this.position.y), 10, 0, 2 * Math.PI);
         this.ctx.fill();
         this.ctx.closePath();
     }

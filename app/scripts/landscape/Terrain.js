@@ -5,7 +5,7 @@ export default class Terrain {
     constructor(scene, noise){
         this.time = 0;
         this.noise = noise;
-        //this.noise2 = new SimplexNoise();
+        //this.noise2 = new SimplexNoise(); 
         this.geometry = new THREE.PlaneBufferGeometry(100, 100, 200, 200);
 
         this.offsetY = 0;
@@ -30,6 +30,8 @@ export default class Terrain {
 
 
         let material = new THREE.MeshPhongMaterial({color: 0xFC6A68, shininess: 0.1});
+
+
         
         // let material = new THREE.ShaderMaterial({
         //     vertexShader: floorVert,
@@ -52,21 +54,30 @@ export default class Terrain {
         this.geometry.verticesNeedUpdate = true;
         this.geometry.attributes.position.needsUpdate = true;
 
+
         let vertices = this.geometry.attributes.position;
         let count = vertices.count;
         for (let i = 0, j = 0; i < count; i++, j += 3) {
             vertices.array[j+2] = this.noise.noise3D(vertices.array[j] * 0.1 + this.offsetX,vertices.array[j+1] * 0.1 + this.offsetY,0) * 1
         }
-        // this.geometry.vertices.forEach(vertex => {
-        //     vertex.z = this.noise.noise3D(vertex.x*0.2, vertex.y*0.2 + this.time * 0.01, 0) + 2 * this.noise.noise3D(vertex.x*0.2 + 5, vertex.y*0.2 + 5 + this.time * 0.01, 0);
-        // });
-        //this.uniforms.posY.value += 0;
         this.time++;
         this.geometry.computeFaceNormals();
         this.geometry.computeVertexNormals();
 
+        //this.mesh.position.z = this.offsetY * 10;
+        //this.mesh.position.x = -this.offsetX * 10;
+
         requestAnimationFrame(this.update.bind(this));
     }
 
+
+}
+
+
+class Plane{
+
+    constructor(){
+
+    }
 
 }
