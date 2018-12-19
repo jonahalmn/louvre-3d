@@ -70,8 +70,8 @@ export default class App {
         this.isRotate = false;
 
 
-        this.ray = new THREE.Raycaster(new THREE.Vector3(0,10,0), new THREE.Vector3(0,-1,0));
-        this.rayH = new THREE.Raycaster(new THREE.Vector3(0,0,0), new THREE.Vector3(0,0,-1), 0, 100);
+        this.ray = new THREE.Raycaster(new THREE.Vector3(0,10,0), new THREE.Vector3(0,-1,0), 0, 19);
+        this.rayH = new THREE.Raycaster(new THREE.Vector3(0,0,0), new THREE.Vector3(0,0,-1), 0, 2);
 
         this.container = document.querySelector( '#main' );
         document.body.appendChild( this.container );
@@ -83,7 +83,7 @@ export default class App {
         this.worldRobotPosition = new THREE.Vector3(0,0,0);
         this.staticRobotPosition = new THREE.Vector3(0,0,0);
 
-        this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 100 );
+        this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 66 );
         this.camera.position.z = 5;
         this.camera.position.y = 2.5;
         this.camera.lookAt(this.staticRobotPosition);

@@ -12,7 +12,7 @@ export default class Mountain {
     constructor(scene, loader, camera){
         let material = new THREE.MeshPhongMaterial({color: 0x383838});
         this.position = {x: 10 + (Math.random()-0.5) * 2 * 50, y: 0, z: 10 + (Math.random()) * 200};
-        this.scale = 0.06 * Math.random();
+        this.scale = 0.02 + 0.06 * Math.random();
         // load a resource
         loader.load(
             // resource URL

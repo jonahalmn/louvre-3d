@@ -124,7 +124,7 @@ class Plane{
     constructor(x, y, scene, noise){
 
         this.noise = noise;
-        this.geometry = new THREE.PlaneBufferGeometry(100, 100, 200, 200);
+        this.geometry = new THREE.PlaneBufferGeometry(100, 100, 100, 100);
         this.position = {x:x, y:y};
         this.offset = {x:0, y:0};
         let material = new THREE.MeshPhongMaterial({color: 0xFC6A68, shininess: 0.1});
@@ -142,7 +142,7 @@ class Plane{
             vertices.array[j+2] = this.noise.noise3D(vertices.array[j] * 0.1 - this.position.x * 0.1,vertices.array[j+1] * 0.1 + this.position.y * 0.1,0) * 1
         }
         this.time++;
-        this.geometry.computeFaceNormals();
+        //this.geometry.computeFaceNormals();
         this.geometry.computeVertexNormals();
     }
 
@@ -158,8 +158,10 @@ class Plane{
         }
         console.log('update')
         this.time++;
-        this.geometry.computeFaceNormals();
+        //this.geometry.computeFaceNormals();
         this.geometry.computeVertexNormals();
+        this.geometry.verticesNeedUpdate = false;
+        this.geometry.attributes.position.needsUpdate = false;
     }
 
 }
