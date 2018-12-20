@@ -66,7 +66,7 @@ button{
     z-index: 2;
 }
 
-/* TITLE */
+                                                                      /* TITLE */
 
 
 .home_who{
@@ -153,8 +153,7 @@ button{
     transform: translateY(0px);
     }
 }
-    /* PAGE GALLERY */
-    
+   
     @-webkit-keyframes fadeIn {
     from {
     opacity: 0; }
@@ -190,7 +189,7 @@ button{
 }
  
 
-/* BUTTON */
+                                                                       /* BUTTON */
 
 .wrapper{
     position: absolute;
@@ -204,8 +203,9 @@ button{
     transition: transform 200ms ease;
     opacity: 0;
     animation: showshow 1500ms ease;
-    animation-delay: 10s;
+    animation-delay: 3000ms;
     animation-fill-mode: forwards;
+    z-index: 0;
   }
   
   svg{

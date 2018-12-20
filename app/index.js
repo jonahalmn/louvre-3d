@@ -4,7 +4,10 @@ import App from './scripts/App';
 import BD from './scripts/ui/Bd';
 import ContentManager from './scripts/ContentManager';
 
+import Frequencies from './scripts/sounds/Frequencies'
+
 import enter from './A7/ui/enter.svg';
+import ambient from './A7/ambient.mp3';
 
 window.app = new App();
 
@@ -60,6 +63,8 @@ document.addEventListener('displayTitle', function(){
 
 document.addEventListener('bdEnded', function(){
     app.map.canvas.style.opacity = 1;
+    let audio = new Audio(ambient)
+		audio.play()
     //console.log('map');
 });
 

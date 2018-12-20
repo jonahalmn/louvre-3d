@@ -62,7 +62,7 @@ export default class App {
         OBJLoader(THREE);
 
         this.game = new Game();
-        this.sounds = new Frequencies(this.scene);
+        //this.sounds = new Frequencies(this.scene);
 
         //let OrbitControl = OrbitControls(THREE);
         this.heading = 0;
