@@ -45,6 +45,7 @@ export default class Map {
         this.canvas.style.position = 'fixed';
         this.canvas.style.bottom = '25px';
         this.canvas.style.right = '25px';
+        this.canvas.style.transition = 'all 2s';
         this.container.appendChild(this.canvas);
         this.ctx = this.canvas.getContext('2d');
     }

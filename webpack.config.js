@@ -85,14 +85,14 @@ module.exports = function(env) {
                 loader: 'webpack-glsl-loader'
             },
             {
-                test: /\.(png|jpg|gif)$/,
+                test: /\.(png|jpg|gif|svg)$/,
                 use: [
                   {
                     loader: 'file-loader',
                     options: {}
                   }
                 ]
-              }]
+            }]
         },
         devtool: env == 'dev' ? 'cheap-eval-source-map' : '',
         plugins: plugins,

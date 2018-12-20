@@ -71,10 +71,14 @@ export default class App {
 
 
         this.ray = new THREE.Raycaster(new THREE.Vector3(0,10,0), new THREE.Vector3(0,-1,0), 0, 19);
-        this.rayH = new THREE.Raycaster(new THREE.Vector3(0,0,0), new THREE.Vector3(0,0,-1), 0, 2);
+        this.rayH = new THREE.Raycaster(new THREE.Vector3(0,0,0), new THREE.Vector3(0,0,-1), 0, 0.5);
 
         this.container = document.querySelector( '#main' );
         document.body.appendChild( this.container );
+
+        this.bdEvent = new Event('displayBD');
+        this.buttonEvent = new Event('displayButton');
+        this.titleEvent = new Event('displayTitle');
 
         this.map = new Map(this.container);
         
@@ -83,7 +87,7 @@ export default class App {
         this.worldRobotPosition = new THREE.Vector3(0,0,0);
         this.staticRobotPosition = new THREE.Vector3(0,0,0);
 
-        this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 66 );
+        this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 100 );
         this.camera.position.z = 5;
         this.camera.position.y = 2.5;
         this.camera.lookAt(this.staticRobotPosition);
@@ -131,6 +135,7 @@ export default class App {
     	this.renderer.setPixelRatio( window.devicePixelRatio );
     	this.renderer.setSize( window.innerWidth, window.innerHeight );
         this.container.appendChild( this.renderer.domElement );
+        this.renderer.domElement.style.transitionDuration= '10s';
         
         this.renderer.shadowMapEnabled = true;
         //this.renderer.shadowMapSoft = true;
@@ -150,19 +155,26 @@ export default class App {
 
     render() {
 
-        //this.mesh.rotation.x += 0.01;
-        //this.mesh.rotation.y += 0.02;
-        //this.terrain.uniforms.posY.value+=0.01;
-
         this.intersect = this.ray.intersectObjects(this.terrain.getPlanesMesh(), false, this.intersect);
         if(this.mountains[0].object){
             this.intersectH = this.rayH.intersectObjects(this.elementsManager.getObjectProperty(), true, this.intersectH);
         }
-       // console.log(this.intersect);
+       
+        if(this.time == 1260){
+            document.dispatchEvent(this.buttonEvent);
+        }
+
+        if(this.time == 200){
+            document.dispatchEvent(this.titleEvent);
+        }
     
 
         if(this.isRotate){
             this.heading += this.turnSide *0.1;
+        }
+
+        if(this.time == 10){
+            this.renderer.domElement.style.opacity = 1;
         }
 
         if(this.moving){
@@ -207,14 +219,19 @@ export default class App {
         this.sites.forEach((rock) => {
             if(rock.object != null && rock.object != undefined){
                 rock.object.position.z = -rock.position.z + this.worldRobotPosition.z * 10;
-                rock.object.position.y = this.noise.noise3D(rock.position.x,rock.position.z,0);
+                rock.object.position.y = 2;
                 rock.object.position.x = -rock.position.x -this.worldRobotPosition.x *10;
             }
         });
         
 
-        this.camera.position.z = 5;
-        this.camera.position.z = 5 * Math.cos(this.heading);
+        //this.camera.position.z = 5;
+        if(this.time > 1200){
+            this.camera.position.z = 5 * Math.cos(this.heading);
+        }else{
+            this.camera.position.z = easeInSine(this.time, 150, -145, 1200);
+            this.sky.mesh.position.z = easeInSine(this.time, 150, -145, 1200);
+        }
         this.camera.position.x = -5 * Math.sin(this.heading);
         this.terrain.offsetY = this.worldRobotPosition.z;
         this.terrain.offsetX = this.worldRobotPosition.x;
@@ -263,4 +280,17 @@ export default class App {
     stopTurn(){
         this.isRotate = false;
     }
+
+    startDig(){
+        this.isDiggin = true;
+    }
+
+    stopDig(){
+        this.isDiggin = false;
+    }
+}
+
+
+function easeInSine (t, b, c, d){
+    return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
 }

@@ -25,6 +25,7 @@ export default class Site {
             
                 } );
                 //camera.lookAt(object);
+                object.position.z = 100
                 object.scale.set(this.scale,this.scale,this.scale);
                 scene.add( object );
                 this.object = object;

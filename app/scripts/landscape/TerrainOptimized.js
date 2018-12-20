@@ -19,9 +19,9 @@ export default class Terrain {
         this.planes = [];
 
         this.planes.push(new Plane(0,0, scene, noise));
-        this.planes.push(new Plane(0,100, scene, noise));
+        this.planes.push(new Plane(0,-100, scene, noise));
         this.planes.push(new Plane(100,0, scene, noise));
-        this.planes.push(new Plane(100,100, scene, noise));
+        this.planes.push(new Plane(100,-100, scene, noise));
         
         this.update();
     }
