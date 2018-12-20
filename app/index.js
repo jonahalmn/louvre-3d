@@ -9,6 +9,8 @@ import Frequencies from './scripts/sounds/Frequencies'
 import enter from './A7/ui/enter.svg';
 import ambient from './A7/ambient.mp3';
 
+import SubtitlesManager from './scripts/ui/SubtitlesManager';
+
 window.app = new App();
 
 let uiElt = document.querySelector('#ui');
@@ -49,6 +51,19 @@ window.addEventListener('keydown', function(e){
     }
 });
 
+
+window.addEventListener('keyup', function(e){
+    if(e.keyCode === 32){
+        app.stopDig();
+    }
+});
+
+window.addEventListener('keydown', function(e){
+    if(e.keyCode === 32){
+        app.startDig();
+    }
+});
+
 document.addEventListener('displayTitle', function(){
     console.log('title');
     uiElt.innerHTML = ContentManager.title();
@@ -84,4 +99,5 @@ document.addEventListener('bdEnded', function(){
 
 function displayBd(){
     let bd = new BD();
+    let subtitles = new SubtitlesManager(ContentManager.bdTextes());
 }

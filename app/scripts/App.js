@@ -45,6 +45,7 @@ import Site from './landscape/Site';
 import ElementsManager from './managers/ElementsManager.js';
 import Frequencies from './sounds/frequencies.js';
 import Game from './managers/Game';
+import DigUiManager from './ui/DigUiManager'
 
 import Map from './ui/Map';
 
@@ -70,6 +71,10 @@ export default class App {
 
         this.turnSide = 1;
         this.isRotate = false;
+
+        this.isDiggin = false;
+        this.digProgress = 0;
+        this.digUi = new DigUiManager();
 
 
         this.ray = new THREE.Raycaster(new THREE.Vector3(0,10,0), new THREE.Vector3(0,-1,0), 0, 19);
@@ -255,6 +260,17 @@ export default class App {
 
         this.rayH.set(new THREE.Vector3(0,0,0), new THREE.Vector3(Math.sin(this.heading),0,-Math.cos(this.heading)));
 
+        if(this.isDiggin){
+            if(this.isInArcheologicalArea() !== false){
+                this.digProgress++;
+                console.log('hell yeah you are digging ;)' + this.digProgress);
+            }else{
+                this.digProgress = 0;
+                console.log('not in area :(');
+                this.digUi.warning();
+            }
+        }
+
         this.time++;
     	this.renderer.render( this.scene, this.camera );
     }
@@ -288,7 +304,22 @@ export default class App {
     }
 
     stopDig(){
+        this.digProgress = 0;
         this.isDiggin = false;
+    }
+
+    isInArcheologicalArea(){
+        let index = false
+        this.game.sites.forEach((site, i) => {
+            console.log(site.x *0.1);
+            console.log(site.y * 0.1);
+            console.log(this.worldRobotPosition.x);
+            if(this.worldRobotPosition.z > (site.y*0.1) - 1 && this.worldRobotPosition.z < (site.y*0.1) + 1 && -this.worldRobotPosition.x > (site.x*0.1) - 1 && -this.worldRobotPosition.x < (site.x*0.1) + 1){
+                index = i;
+            }
+        });
+
+        return index;
     }
 }
 
