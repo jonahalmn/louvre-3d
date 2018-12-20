@@ -43,6 +43,7 @@ import Rock from './landscape/Rock';
 import Site from './landscape/Site';
 
 import ElementsManager from './managers/ElementsManager.js';
+import Frequencies from './sounds/frequencies.js';
 import Game from './managers/Game';
 
 import Map from './ui/Map';
@@ -61,6 +62,7 @@ export default class App {
         OBJLoader(THREE);
 
         this.game = new Game();
+        this.sounds = new Frequencies(this.scene);
 
         //let OrbitControl = OrbitControls(THREE);
         this.heading = 0;

@@ -188,3 +188,45 @@ button{
     -moz-animation-duration: 1s;
     animation-duration: 1s;
 }
+ 
+
+/* BUTTON */
+
+.wrapper{
+    position: absolute;
+    top: 50px;
+    right: 15px;
+    transform: translate(-50%, -50%);
+  }
+
+  button{
+    background-color: white;
+    transition: transform 200ms ease;
+    opacity: 0;
+    animation: showshow 1500ms ease;
+    animation-delay: 10s;
+    animation-fill-mode: forwards;
+  }
+  
+  svg{
+    width: 50px;
+    cursor: pointer;
+  }
+  
+  .circle_lg{
+    stroke-dasharray: 600px 1500px;
+    transition: all .5s;
+  }
+  
+  .circle_sm{
+    opacity: 1;
+    transition: all .25s;
+  }
+  
+  svg.mute .circle_lg{
+    stroke-dashoffset: -1360px;
+  }
+  
+  svg.mute .circle_sm{
+    opacity: 0;
+  }
