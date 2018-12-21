@@ -79,6 +79,7 @@ document.addEventListener('displayTitle', function(){
 document.addEventListener('bdEnded', function(){
     app.map.canvas.style.opacity = 1;
     let audio = new Audio(ambient)
+        audio.loop = true
 		audio.play()
     //console.log('map');
 });

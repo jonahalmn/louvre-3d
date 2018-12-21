@@ -12,6 +12,7 @@ export default class Frequencies {
 	}	
 	begin(){
 		let audio = new Audio(intro)
+		audio.loop = true
 		audio.play()
 	}	
 }
